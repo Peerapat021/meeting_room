@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: meeting-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: meeting_room
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev123
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: meeting-pma
+    restart: always
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8080:80" # เปิด phpMyAdmin ที่ http://localhost:8080
+    depends_on:
+      - db
+volumes:
+  dbdata:
