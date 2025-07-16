@@ -1,16 +1,28 @@
+//src/app/admin/layout.tsx
+
+import { getCurrentUser } from "@/lib/auth"
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 import "../globals.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-
+import SignOutButton from './SignOutButton';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 export const metadata = {
   title: "แอดมิน - ระบบจองห้อง",
 };
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
+  const session = await getServerSession(authOptions);
+  const user = await getCurrentUser()
 
+  // ✅ ป้องกันคนที่ไม่ได้ login หรือไม่ใช่ admin
+  if (!session || session.user?.role !== 'admin') {
+    redirect('/'); // หรือ redirect('/login')
+  }
+
+  if (!user || user.role !== "admin") {
+    redirect("/") // redirect ถ้าไม่ใช่ admin
+  }
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
@@ -20,6 +32,10 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         aria-label="Sidebar"
       >
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+          <p style={{ marginBottom: '1rem' }}>
+            <strong>{session.user.name}</strong>
+          </p>
+
           <ul className="space-y-2 font-medium">
             <li>
               <a
@@ -74,16 +90,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
               </a>
             </li>
             <li>
-              <a
-                href="/api/auth/signout"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-              >
-                <FontAwesomeIcon
-                  icon={faRightFromBracket}
-                  className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                />
-                <span className="flex-1 ms-3 whitespace-nowrap">sign out</span>
-              </a>
+              <SignOutButton />
             </li>
           </ul>
         </div>

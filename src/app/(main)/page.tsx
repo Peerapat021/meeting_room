@@ -1,6 +1,13 @@
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 
-export default async function Home() {
-  return <>
-    <h1>ยินดีต้อนรับสู่เว็บไซต์ของฉัน!</h1>
-  </>;
+export default async function HomePage() {
+  const session = await getServerSession(authOptions)
+
+
+  return (
+    <div>
+      ยินดีต้อนรับครับ
+    </div>
+  )
 }

@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 
 import Navbar from "@/app/components/navbar";
-
+import { Providers } from "../providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,17 +22,15 @@ export const metadata: Metadata = {
 
 export default function MainLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <div
-      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-    >
-       <Navbar />
-
+    <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <Providers>
+        <Navbar />
         {children}
-     
+      </Providers>
     </div>
   );
 }
