@@ -1,5 +1,4 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 import "../globals.css";
@@ -11,19 +10,9 @@ export const metadata = {
 };
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
-  const session = await getServerSession(authOptions);
-
-  if (!session) {
-    redirect("/login");
-  }
-
-  if (session.user?.role !== "admin") {
-    redirect("/"); // เปลี่ยนเส้นทางผู้ใช้ทั่วไปไปที่หน้า Home
-  }
 
   return (
     <div className="flex min-h-screen">
-      <h1>👋 สวัสดีคุณ {(session.user as any).name}</h1>
       {/* Sidebar */}
       <aside
         id="default-sidebar"
