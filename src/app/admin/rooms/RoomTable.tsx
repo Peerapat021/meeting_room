@@ -50,38 +50,47 @@ export default function RoomTable({ rooms }: { rooms: any[] }) {
 
   return (
     <div>
-      <table className="w-full bg-white shadow-lg rounded-lg overflow-hidden">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="p-4 text-left">ชื่อ</th>
-            <th className="p-4 text-left">ที่ตั้ง</th>
-            <th className="p-4 text-left">ความจุ</th>
-            <th className="p-4 text-center">จัดการ</th>
-          </tr>
-        </thead>
-        <tbody>
-          {roomData.map((room) => (
-            <tr key={room.id} className="hover:bg-gray-50">
-              <td className="p-4">{room.name}</td>
-              <td className="p-4">{room.location}</td>
-              <td className="p-4">{room.capacity}</td>
-              <td className="p-4">
-                <div className="flex items-center justify-center space-x-2">
-                  <button
-                    className="bg-yellow-500 p-2 rounded-sm"
-                    onClick={() => openEditModal(room)}
-                  >
-                    <FaEdit className="text-white text-2xl" />
-                  </button>
-                  <button className="bg-red-500 p-2 rounded-sm">
-                    <FaTrash className="text-white text-2xl" />
-                  </button>
-                </div>
-              </td>
+
+
+      <div className="relative overflow-x-auto">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" className="px-6 py-3">
+                room name
+              </th>
+              <th scope="col" className="px-6 py-3">
+                location
+              </th>
+              <th scope="col" className="px-6 py-3">
+                capacity
+              </th>
+              <th scope="col" className="px-6 py-3">
+                mn
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {roomData.map((rooms) => (
+              <tr key={rooms.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                <td className="px-6 py-4">
+                  {rooms.name}
+                </td>
+                <td className="px-6 py-4">
+                  {rooms.location}
+                </td>
+                <td className="px-6 py-4">
+                  {rooms.capacity}
+                </td>
+                <td className="px-6 py-4">
+                  <button onClick={() => openEditModal(rooms)}> <FaEdit /></button>
+                </td>
+              </tr>
+            ))}
+
+          </tbody>
+        </table>
+      </div>
 
       {/* ✨ Modal แก้ไขข้อมูล */}
       {editingRoom && (

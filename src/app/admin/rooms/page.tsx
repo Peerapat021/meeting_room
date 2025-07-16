@@ -7,7 +7,7 @@ export default async function AdminRooms() {
 
   return (
     <section className="mt-8 mx-12">
-      <h2 className="text-xl font-bold mb-4">📋 ห้องประชุมทั้งหมด</h2>
+      <h2 className="text-xl font-bold mb-4">📋 Rooms</h2>
       <RoomTable rooms={rooms} />
     </section>
   );

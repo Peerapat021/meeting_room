@@ -1,10 +1,19 @@
 // src/app/admin/page.tsx
 
-import { Getroom , Getbooking} from '@/lib/services/get';
+import { Getroom, Getbooking } from '@/lib/services/get';
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
 
 export default async function AdminPage() {
   const rooms = await Getroom();
   const bookings = await Getbooking();
+
+  const session = await getServerSession(authOptions);
+
+  if (!session || session.user?.role !== "admin") {
+    redirect("/login");
+  }
 
   return (
     <main style={{ padding: '2rem' }}>
