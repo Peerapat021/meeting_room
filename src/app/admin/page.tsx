@@ -1,4 +1,4 @@
-import { Getroom, Getbooking } from '@/lib/services/get';
+import { Getroom, Getbooking } from '@/lib/services/rooms/get';
 import { getServerSession } from "next-auth";
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { redirect } from 'next/navigation';
@@ -6,47 +6,53 @@ import { redirect } from 'next/navigation';
 export default async function AdminPage() {
   const session = await getServerSession(authOptions);
 
-  // ✅ ป้องกันคนที่ไม่ได้ login หรือไม่ใช่ admin
   if (!session || session.user?.role !== 'admin') {
-    redirect('/'); // หรือ redirect('/login')
+    redirect('/');
   }
 
   const rooms = await Getroom();
   const bookings = await Getbooking();
 
   return (
-    <main className="p-8">
-      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
-      {/* 
-      <p className="mb-4">
-        👋 สวัสดีคุณ <strong>{session.user.name}</strong>
-      </p> 
-      */}
+    <main className="">
+      <h1 className="text-4xl font-extrabold mb-8 text-gray-800">Admin Dashboard</h1>
 
-      <section className="mt-8">
-        <h2 className="text-2xl font-semibold mb-4">📋 ห้องประชุมทั้งหมด</h2>
-        <ul className="list-disc list-inside space-y-2">
-          {(rooms as any[]).map((room) => (
-            <li key={room.id} className="text-gray-700">
-              {room.name} - {room.location} ({room.capacity} คน)
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="mt-8">
-        <h2 className="text-2xl font-semibold mb-4">📅 รายการจองล่าสุด</h2>
-        <ul className="space-y-4">
+      <section className="mb-12">
+        <h2 className="text-2xl font-semibold mb-6 text-gray-700">📅 รายการจองล่าสุด</h2>
+        <div className="">
           {(bookings as any[]).map((b) => (
-            <li key={b.id} className="bg-white p-4 rounded shadow-sm border border-gray-200">
-              <p className="font-medium">{b.title} โดย {b.user_name} ห้อง {b.room_name}</p>
-              <p className="text-sm text-gray-600">
+            <div
+              key={b.id}
+              className="bg-white p-5 shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300"
+            >
+              <p className="font-bold text-lg text-gray-800">{b.title}</p>
+              <p className="text-gray-600 mt-1">โดย <span className="font-medium">{b.user_name}</span></p>
+              <p className="text-gray-600 mt-1">ห้อง: <span className="font-medium">{b.room_name}</span></p>
+              <p className="text-sm text-gray-500 mt-2">
                 เวลา: {new Date(b.start_time).toLocaleString()} - {new Date(b.end_time).toLocaleString()}
               </p>
-              <p className="text-sm font-semibold mt-1">สถานะ: <span className="capitalize">{b.status}</span></p>
-            </li>
+              <p className="mt-3 text-sm font-semibold">
+                สถานะ: <span className={`capitalize ${b.status === 'confirmed' ? 'text-green-600' : b.status === 'pending' ? 'text-yellow-600' : 'text-red-600'}`}>{b.status}</span>
+              </p>
+            </div>
           ))}
-        </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold mb-6 text-gray-700">📋 ห้องประชุมทั้งหมด</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {(rooms as any[]).map((room) => (
+            <div
+              key={room.id}
+              className="p-5 bg-white rounded-xl shadow-md border border-gray-200 hover:shadow-xl transition-shadow duration-300"
+            >
+              <div className="font-bold text-lg text-gray-800 mb-1">{room.name}</div>
+              <div className="text-gray-600">อาคาร: {room.location}</div>
+              <div className="text-gray-600 mt-1">ความจุ: <span className="font-medium">{room.capacity} คน</span></div>
+            </div>
+          ))}
+        </div>
       </section>
     </main>
   );

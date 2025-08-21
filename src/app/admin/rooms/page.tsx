@@ -1,5 +1,5 @@
 // app/admin/page.tsx
-import { Getroom } from "@/lib/services/get";
+import { Getroom } from "@/lib/services/rooms/get";
 import RoomTable from "@/app/admin/rooms/RoomTable"; 
 
 export default async function AdminRooms() {

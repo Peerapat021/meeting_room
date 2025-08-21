@@ -36,7 +36,7 @@ export default function LoginPage() {
     if (res?.ok) {
       // signIn เรียบร้อยแล้ว session จะอัปเดตโดยอัตโนมัติจาก useSession hook และ useEffect จะจัดการ redirect
     } else {
-      alert('Login failed')
+      alert('รหัสผ่านหรืออีเมลไม่ถูกต้อง')
     }
   }
 
