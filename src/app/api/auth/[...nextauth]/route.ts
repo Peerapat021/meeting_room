@@ -3,7 +3,7 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import type { NextAuthOptions } from "next-auth"
-import {db} from "@/lib/db"  // path ตามที่ตั้งไฟล์จริง
+import { db } from "@/lib/db"  // path ตามที่ตั้งไฟล์จริง
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -33,7 +33,7 @@ export const authOptions: NextAuthOptions = {
 
         // ถ้าตรง ให้ return ข้อมูล user ที่ต้องการเก็บใน session
         return {
-          id: String(user.id),
+          id: user.id,
           name: user.name,
           email: user.email,
           role: user.role,

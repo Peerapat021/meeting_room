@@ -1,4 +1,5 @@
-import { Getroom, Getbooking } from '@/lib/services/rooms/get';
+import { Getroom } from '@/lib/services/rooms/get';
+import { Getbooking } from "@/lib/services/bookings/get";
 import { getServerSession } from "next-auth";
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { redirect } from 'next/navigation';
@@ -15,7 +16,7 @@ export default async function AdminPage() {
 
   return (
     <main className="">
-      <h1 className="text-4xl font-extrabold mb-8 text-gray-800">Admin Dashboard</h1>
+      {/* <h1 className=" text-4xl font-extrabold mb-8 text-gray-800">Admin Dashboard</h1> */}
 
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-6 text-gray-700">📅 รายการจองล่าสุด</h2>
@@ -26,13 +27,13 @@ export default async function AdminPage() {
               className="bg-white p-5 shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300"
             >
               <p className="font-bold text-lg text-gray-800">{b.title}</p>
-              <p className="text-gray-600 mt-1">โดย <span className="font-medium">{b.user_name}</span></p>
-              <p className="text-gray-600 mt-1">ห้อง: <span className="font-medium">{b.room_name}</span></p>
+              <p className="text-gray-600 mt-1"><span className="font-medium">{b.user_name}</span></p>
+              <p className="text-gray-600 mt-1"><span className="font-medium">{b.room_name}</span></p>
               <p className="text-sm text-gray-500 mt-2">
                 เวลา: {new Date(b.start_time).toLocaleString()} - {new Date(b.end_time).toLocaleString()}
               </p>
               <p className="mt-3 text-sm font-semibold">
-                สถานะ: <span className={`capitalize ${b.status === 'confirmed' ? 'text-green-600' : b.status === 'pending' ? 'text-yellow-600' : 'text-red-600'}`}>{b.status}</span>
+                สถานะ: <span className={`capitalize ${b.status === 'approved' ? 'text-green-600' : b.status === 'pending' ? 'text-yellow-600' : 'text-red-600'}`}>{b.status}</span>
               </p>
             </div>
           ))}

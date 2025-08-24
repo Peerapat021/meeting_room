@@ -1,4 +1,4 @@
-//src/app/api/rooms/[id]/route.ts
+//src/app/api/bookings/[id]/route.ts
 import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { ResultSetHeader } from "mysql2/promise";
@@ -20,47 +20,49 @@ export async function PUT(
   if (!id || isNaN(Number(id))) return new Response("Invalid id", { status: 400 });
 
   try {
-    const { name, location, capacity } = await req.json();
-    if (![name, location, capacity].every(Boolean)) return new Response("Missing fields", { status: 400 });
+    const { status, } = await req.json();
+    if (![status].every(Boolean)) return new Response("Missing fields", { status: 400 });
 
     const [result] = await db.query<ResultSetHeader>(
-      "UPDATE rooms SET name = ?, location = ?, capacity = ? WHERE id = ?",
-      [name, location, capacity, id]
+      "UPDATE bookings SET status = ? WHERE id = ?",
+      [status, id]
     );
 
-    if (result.affectedRows === 0) return new Response("Room not found", { status: 404 });
+    if (result.affectedRows === 0) return new Response("Booking not found", { status: 404 });
 
-    return new Response(JSON.stringify({ message: "Room updated successfully" }), {
+    return new Response(JSON.stringify({ message: "Booking updated successfully" }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
     console.error("Update error:", error);
-    return new Response("Error updating room", { status: 500 });
+    return new Response("Error updating booking", { status: 500 });
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const user = await getUser(req);
   if (!user || user.role !== "admin") return new Response("Unauthorized", { status: 403 });
 
-  const id = params.id;
+  const {id} = await params;
   if (!id || isNaN(Number(id))) return new Response("Invalid id", { status: 400 });
 
   try {
     const [result] = await db.query<ResultSetHeader>(
-      "DELETE FROM rooms WHERE id = ?",
+      "DELETE FROM bookings WHERE id = ?",
       [id]
     );
 
-    if (result.affectedRows === 0) return new Response("Room not found", { status: 404 });
+    if (result.affectedRows === 0) return new Response("Booking not found", { status: 404 });
 
-    return new Response(JSON.stringify({ message: "Room deleted successfully" }), {
+    return new Response(JSON.stringify({ message: "Booking deleted successfully" }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
     console.error("Delete error:", error);
-    return new Response("Error deleting room", { status: 500 });
+    return new Response("Error deleting booking", { status: 500 });
   }
 }

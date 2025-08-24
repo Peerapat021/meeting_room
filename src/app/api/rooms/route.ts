@@ -1,7 +1,7 @@
 //src/app/api/rooms/route.ts
 import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
-import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
+import { RowDataPacket } from "mysql2/promise";
 import { Room } from "@/lib/types/room";
 
 // ตัวอย่าง mock session / auth
@@ -22,4 +22,5 @@ export async function GET() {
     return new Response("ไม่สามารถโหลดข้อมูลห้องได้", { status: 500 });
   }
 }
+
 

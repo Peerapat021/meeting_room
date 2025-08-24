@@ -83,7 +83,7 @@ export default function RoomTable({ rooms }: { rooms: any[] }) {
 
 
   return (
-    <div>
+    <div className=" ">
       <div className="relative overflow-x-auto">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -195,7 +195,7 @@ export default function RoomTable({ rooms }: { rooms: any[] }) {
             <h2 className="text-lg font-bold mb-4 text-red-600">ยืนยันการลบ</h2>
             <p className="mb-6">
               คุณต้องการลบห้อง{" "}
-              <span className="font-semibold">{deletingRoom.id}</span> หรือไม่?
+              <span className="font-semibold">{deletingRoom.name}</span> หรือไม่?
             </p>
             <div className="flex justify-end space-x-2">
               <button
