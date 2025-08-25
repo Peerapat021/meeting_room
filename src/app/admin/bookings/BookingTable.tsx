@@ -40,6 +40,7 @@ export default function Booking_rooms({ bookings }: { bookings: any[] }) {
     }
     fetchRooms();
   }, []);
+
   // เปิด-ปิดฟอร์มเพิ่ม
   const openCreateModal = () => setCreatingBooking(true);
   const closeCreateModal = () => setCreatingBooking(false);
@@ -51,7 +52,7 @@ export default function Booking_rooms({ bookings }: { bookings: any[] }) {
       setBookingData(prev => [...prev, created]); // update table
       closeCreateModal();
     } catch (err) {
-      console.error("ไม่สามารถสร้างได้", err);
+      console.error("Error creating booking", err);
       alert("ไม่สารถสร้าง bookings ได้")
     }
   }

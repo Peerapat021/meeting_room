@@ -1,14 +1,14 @@
-// lib/services/rooms/delete.ts
+// lib/services/bookings/delete.ts
 
-export async function deleteRoom({ id}: {
-  id: number;
+export async function deleteRoom({ id }: {
+    id: number;
 }) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/rooms/${id}`, {
-    method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' },
-  });
+    const res = await fetch(`/api/rooms/${id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+    });
 
-  if (!res.ok) throw new Error('ไม่สามารถลบข้อมูลห้องได้');
+    if (!res.ok) throw new Error('ไม่สามารถลบข้อมูลการจองได้');
 
-  return res.json();
+    return res.json();
 }

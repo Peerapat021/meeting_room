@@ -27,7 +27,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    // ดึง session ของ user ที่ login
+    // ดึง session ของ user ที่ล็อกอิน
     const session = await getServerSession(authOptions);
 
     if (!session || !session.user) {
@@ -36,13 +36,24 @@ export async function POST(req: NextRequest) {
 
     const { name, location, capacity } = await req.json();
 
-    if (!name || !location || capacity) {
-      return new Response("Missing fields", { status: 400 });
+    if (!name || !location || !capacity) {
+      return new Response("Missing Fields", { status: 400 });
     }
 
-    
+    // ใช้ user.id จาก session 
+    const userId = session.user.id;
+
+    const [result] = await db.query<ResultSetHeader>(
+      "INSERT INTO rooms (name, location, capacity, user_id) VALUES (?, ?, ?, ?)",
+      [name, location, capacity, userId]
+    );
+
+    return new Response(
+      JSON.stringify({ message: "Rooms created", id: result.insertId }),
+      { status: 201, headers: { "Content-Type": "application/json" } }
+    );
   } catch (err) {
     console.error(err);
-    return new Response("Error creating roome", { status: 500 });
+    return new Response("Error creating Rooms", { status: 500 });
   }
 }

@@ -2,6 +2,8 @@
 import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { ResultSetHeader } from "mysql2/promise";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 // ตัวอย่าง mock session / auth
 async function getUser(req: NextRequest) {
@@ -40,20 +42,36 @@ export async function PUT(
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
-  const user = await getUser(req);
-  if (!user || user.role !== "admin") return new Response("Unauthorized", { status: 403 });
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const session = await getServerSession(authOptions);
+  if (!session || !session.user) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 
-  const id = params.id;
-  if (!id || isNaN(Number(id))) return new Response("Invalid id", { status: 400 });
+  const { id } = await params;
+  if (!id || isNaN(Number(id))) {
+    return new Response("Invalid id", { status: 400 });
+  }
 
   try {
-    const [result] = await db.query<ResultSetHeader>(
-      "DELETE FROM rooms WHERE id = ?",
-      [id]
-    );
+    // ตรวจสอบสิทธิ์
+    let query = "DELETE FROM rooms WHERE id = ?";
+    let values: any[] = [id];
 
-    if (result.affectedRows === 0) return new Response("Room not found", { status: 404 });
+    if (session.user.role !== "admin") {
+      // ถ้าเป็น user → ลบได้เฉพาะ booking ของตัวเอง
+      query += " AND user_id = ?";
+      values.push(session.user.id);
+    }
+
+    const [result] = await db.query<ResultSetHeader>(query, values);
+
+    if (result.affectedRows === 0) {
+      return new Response("Room not found or no permission", { status: 404 });
+    }
 
     return new Response(JSON.stringify({ message: "Room deleted successfully" }), {
       status: 200,
@@ -61,6 +79,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     });
   } catch (error) {
     console.error("Delete error:", error);
-    return new Response("Error deleting room", { status: 500 });
+    return new Response("Error deleting Room", { status: 500 });
   }
 }
+
