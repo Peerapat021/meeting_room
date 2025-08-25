@@ -1,3 +1,5 @@
+// lib/services/rooms/delete.ts
+
 export async function deleteRoom({ id}: {
   id: number;
 }) {

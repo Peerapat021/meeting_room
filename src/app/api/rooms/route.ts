@@ -1,7 +1,9 @@
 //src/app/api/rooms/route.ts
 import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
-import { RowDataPacket } from "mysql2/promise";
+import { RowDataPacket, ResultSetHeader } from "mysql2/promise";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { Room } from "@/lib/types/room";
 
 // ตัวอย่าง mock session / auth
@@ -23,4 +25,24 @@ export async function GET() {
   }
 }
 
+export async function POST(req: NextRequest) {
+  try {
+    // ดึง session ของ user ที่ login
+    const session = await getServerSession(authOptions);
 
+    if (!session || !session.user) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+
+    const { name, location, capacity } = await req.json();
+
+    if (!name || !location || capacity) {
+      return new Response("Missing fields", { status: 400 });
+    }
+
+    
+  } catch (err) {
+    console.error(err);
+    return new Response("Error creating roome", { status: 500 });
+  }
+}

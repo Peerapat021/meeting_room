@@ -1,3 +1,5 @@
+// lib/services/rooms/put.ts
+
 export async function updateRoom({ id, name, location, capacity }: {
   id: number;
   name: string;
