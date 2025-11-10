@@ -1,5 +1,5 @@
 import { Getroom } from '@/lib/services/rooms/get';
-import { Getbooking } from "@/lib/services/bookings/get";
+import { GetbookingLimit } from "@/lib/services/bookings/get";
 import { getServerSession } from "next-auth";
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { redirect } from 'next/navigation';
@@ -12,7 +12,7 @@ export default async function AdminPage() {
   }
 
   const rooms = await Getroom();
-  const bookings = await Getbooking();
+  const bookings = await GetbookingLimit(3);
 
   return (
     <main className="">
@@ -20,7 +20,7 @@ export default async function AdminPage() {
 
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-6 text-gray-700">📅 รายการจองล่าสุด</h2>
-        <div className="">
+        <div className="flex flex-cols-1 sm:flex-cols-2 md:flex-cols-3 lg:flex-cols-4 gap-6">
           {(bookings as any[]).map((b) => (
             <div
               key={b.id}
@@ -46,7 +46,7 @@ export default async function AdminPage() {
           {(rooms as any[]).map((room) => (
             <div
               key={room.id}
-              className="p-5 bg-white rounded-xl shadow-md border border-gray-200 hover:shadow-xl transition-shadow duration-300"
+              className="p-5 bg-white  shadow-md border border-gray-200 hover:shadow-xl transition-shadow duration-300"
             >
               <div className="font-bold text-lg text-gray-800 mb-1">{room.name}</div>
               <div className="text-gray-600">อาคาร: {room.location}</div>

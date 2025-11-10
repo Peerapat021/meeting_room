@@ -9,7 +9,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: meeting_room
       MYSQL_USER: dev
-      MYSQL_PASSWORD: dev123
+      MYSQL_PASSWORD: peerapat752002
     ports:
       - "3306:3306"
     volumes:

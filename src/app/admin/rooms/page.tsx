@@ -1,4 +1,4 @@
-// app/admin/page.tsx
+// app/admin/rooms/page.tsx
 import { Getroom } from "@/lib/services/rooms/get";
 import RoomTable from "@/app/admin/rooms/RoomTable"; 
 

@@ -6,9 +6,12 @@ import { NextRequest } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const [rows] = await db.query<Booking[] & RowDataPacket[]>(`
+    const { searchParams } = new URL(req.url);
+    const limitParam = searchParams.get("limit");
+
+    let query = `
       SELECT 
         b.id, b.title, b.start_time, b.end_time, b.status, b.created_at,
         r.name AS room_name,
@@ -17,16 +20,26 @@ export async function GET() {
       JOIN rooms r ON b.room_id = r.id
       JOIN users u ON b.user_id = u.id
       ORDER BY b.start_time DESC
-    `);
+    `;
+    const params: any[] = [];
+
+    // ถ้ามี limit ให้เพิ่ม LIMIT 
+    if (limitParam) {
+      query += " LIMIT ?";
+      params.push(Number(limitParam));
+    }
+
+    const [rows] = await db.query<Booking[] & RowDataPacket[]>(query, params);
+
     return new Response(JSON.stringify(rows), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    return new Response('Error querying database', { status: 500 });
+    console.error("Get bookings error:", error);
+    return new Response("Error querying database", { status: 500 });
   }
 }
-
 
 export async function POST(req: NextRequest) {
   try {

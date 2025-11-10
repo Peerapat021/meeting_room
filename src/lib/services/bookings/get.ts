@@ -9,4 +9,13 @@ export async function Getbooking() {
   return res.json();
 }
 
+export async function GetbookingLimit(limit: number) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/bookings?limit=${limit}`,
+    { cache: 'no-store' }
+  );
+
+  if (!res.ok) throw new Error('ไม่สามารถโหลดข้อมูลการจองได้');
+  return res.json();
+}
 

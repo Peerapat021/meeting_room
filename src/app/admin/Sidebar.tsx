@@ -9,6 +9,7 @@ const menuItems = [
   { name: "Dashboard", href: "/admin", icon: <FaHome /> },
   { name: "Rooms", href: "/admin/rooms", icon: <FaDoorOpen /> },
   { name: "Bookings", href: "/admin/bookings", icon: <FaBook /> },
+  { name: "Users", href: "/admin/users", icon: <FaUser /> },
 ];
 
 export default function Sidebar({ user }: { user: any }) {

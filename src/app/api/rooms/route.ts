@@ -6,12 +6,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { Room } from "@/lib/types/room";
 
-// ตัวอย่าง mock session / auth
-async function getUser(req: NextRequest) {
-  // แทนที่ด้วยระบบ auth จริง
-  return { role: "admin" };
-}
-
 export async function GET() {
   try {
     const [rows] = await db.query<Room[] & RowDataPacket[]>("SELECT * FROM rooms");
