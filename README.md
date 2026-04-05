@@ -1,36 +1,157 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏢 Meeting Room Booking System
 
-## Getting Started
+ระบบจองห้องประชุม (Meeting Room Booking System) พัฒนาด้วย **Next.js (Fullstack Framework)** และ **MySQL** สำหรับจัดการการจองห้อง ตรวจสอบสถานะ และบริหารตารางการใช้งาน
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 📌 Overview
+
+ระบบนี้ถูกออกแบบมาเพื่อช่วยให้ผู้ใช้งานสามารถ:
+
+* ตรวจสอบห้องว่าง
+* จองห้องประชุม
+* ดูตารางการใช้งาน
+
+พัฒนาโดยใช้ **Next.js** ซึ่งรองรับทั้ง Frontend และ Backend (API Routes) ภายในโปรเจกต์เดียว
+
+---
+
+## 🚀 Features
+
+### 👤 User Features
+
+* ดูรายการห้องประชุม
+* ตรวจสอบสถานะห้องว่าง
+* จองห้องประชุม
+* ดูประวัติการจอง
+
+### 🛠️ Admin Features
+
+* เพิ่ม / แก้ไข / ลบ ห้องประชุม
+* จัดการการจอง
+* ตรวจสอบตารางการใช้งาน
+
+---
+
+## 🛠️ Tech Stack
+
+| Category  | Technology           |
+| --------- | -------------------- |
+| Framework | Next.js (App Router) |
+| Language  | TypeScript           |
+| Database  | MySQL                |
+| Styling   | Tailwind CSS         |
+| Backend   | Next.js API Routes   |
+
+---
+
+## 🧱 System Architecture
+
+* Next.js (Frontend + API Routes)
+* MySQL Database
+
+---
+
+## 📁 Project Structure
+
+```id="3p3mpf"
+app/
+ ├── page.tsx          # หน้าแรก
+ ├── booking/          # หน้าจอง
+ ├── admin/            # หน้า admin
+components/            # UI Components
+lib/                   # DB / Utilities
+api/                   # API Routes
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ⚙️ Installation & Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1️⃣ Clone Repository
 
-## Learn More
+```bash id="jjuo1r"
+git clone https://github.com/yourusername/meeting_room.git
+cd meeting_room
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2️⃣ Install Dependencies
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash id="a7d7m3"
+npm install
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 3️⃣ Setup Environment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+สร้างไฟล์ `.env.local`:
+
+```env id="q9fjrd"
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=meeting_room
+```
+
+---
+
+### 4️⃣ Run Development Server
+
+```bash id="vkjq91"
+npm run dev
+```
+
+เปิด:
+
+````
+http://localhost:3000
+``` id="q0d3cc"
+
+---
+
+## 🔗 API Example
+
+### Get All Rooms
+``` id="1z0gxq"
+GET /api/rooms
+````
+
+### Create Booking
+
+```id="dy1rsg"
+POST /api/bookings
+```
+
+---
+
+## 👨‍💻 My Responsibilities
+
+* พัฒนา Fullstack ด้วย Next.js
+* ออกแบบและพัฒนา API Routes
+* เชื่อมต่อฐานข้อมูล MySQL
+* ออกแบบ UI ด้วย Tailwind CSS
+* จัดการ Logic ระบบจองห้อง
+
+---
+
+## 📷 Screenshots
+
+> (เพิ่มรูป UI จะช่วยเพิ่มความน่าสนใจ)
+
+---
+
+## 🔮 Future Improvements
+
+* 🔐 Authentication (Login / Register)
+* 📅 Calendar View สำหรับการจอง
+* 🔔 Notification แจ้งเตือน
+* 📊 Dashboard สำหรับ Admin
+
+---
+
+## ⭐ Notes
+
+โปรเจกต์นี้พัฒนาเพื่อฝึกทักษะ Fullstack Development โดยใช้ Next.js เป็นหลัก
