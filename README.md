@@ -52,20 +52,6 @@
 
 ---
 
-## 📁 Project Structure
-
-```id="3p3mpf"
-app/
- ├── page.tsx          # หน้าแรก
- ├── booking/          # หน้าจอง
- ├── admin/            # หน้า admin
-components/            # UI Components
-lib/                   # DB / Utilities
-api/                   # API Routes
-```
-
----
-
 ## ⚙️ Installation & Setup
 
 ### 1️⃣ Clone Repository
